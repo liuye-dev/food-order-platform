@@ -35,7 +35,7 @@
 | 前端 | Vue、Vite | 实现顾客端和商家端核心页面 |
 | 后端 | Django、Django REST Framework | 提供 REST API 和业务规则 |
 | 数据库 | MySQL | 本地开发可连接本机 MySQL，Docker 验收连接容器内 MySQL |
-| 依赖管理 | uv、requirements.txt | Python 依赖以 `requirements.txt` 为准 |
+| 依赖管理 | uv、pyproject.toml、uv.lock | Python 依赖以 `pyproject.toml` 和 `uv.lock` 为准 |
 | 接口文档 | drf-spectacular | 用于接口演示和验收说明 |
 | 最终打包 | Docker、Docker Compose | 老师验收时不要求手动安装 Python、Node、MySQL |
 
