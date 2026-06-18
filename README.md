@@ -1,6 +1,6 @@
 # 在线点餐平台
 
-> `food-order-platform` 是一个基于 `Django + Vue + SQLite` 的在线点餐平台 MVP，用于课程项目验收。
+> `food-order-platform` 是一个基于 `Django + Vue + SQLite` 的在线点餐平台 MVP。
 
 ## 一、项目简介
 
@@ -35,22 +35,32 @@
 
 ## 四、一键启动
 
-老师本机只需要安装 Python、uv、Node.js。
+只需要安装 Python、uv、Node.js。
 
-在项目根目录双击或执行：
+Windows 在项目根目录双击或执行：
 
 ```powershell
-start-demo.cmd
+start-win.cmd
 ```
 
-脚本会自动完成：
+该脚本会完成依赖安装、数据库初始化和 demo 数据导入，并分别打开后端、前端两个服务窗口
+
+macOS 在项目根目录执行：
+
+```bash
+bash start-mac.sh
+```
+
+该脚本会在当前终端中启动后端和前端，按 `Ctrl+C` 可以同时停止两个服务
+
+两个脚本都会自动完成：
 
 - 安装 Python 后端依赖
 - 创建 SQLite 本地数据库
 - 执行 Django 迁移
 - 导入 demo 数据
-- 打开后端服务窗口
-- 打开前端服务窗口
+- 启动 Django 后端服务
+- 启动 Vue 前端服务
 
 启动后访问：
 
@@ -136,6 +146,7 @@ food-order-platform/
   pyproject.toml           # uv 项目配置与 Python 后端依赖声明
   uv.lock                  # uv 锁定的精确依赖版本
   project-rules.md         # 项目开发约束
-  start-demo.cmd           # 本地演示启动脚本
+  start-win.cmd            # Windows 本地演示启动脚本
+  start-mac.sh             # macOS 本地演示启动脚本
   README.md                # 项目说明
 ```
