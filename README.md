@@ -145,10 +145,20 @@ npm run dev
 food-order-platform/
   backend/                 # Django 后端项目
     api/                   # 核心业务应用
+      models.py            # 数据模型与领域对象
+      serializers.py       # API 输出与表单数据序列化
+      services.py          # 登录、购物车、下单、支付、订单流转等业务规则
+      responses.py         # 统一接口响应格式
+      exceptions.py        # 业务异常定义
+      views.py             # HTTP 请求适配层
     config/                # Django 配置
     Dockerfile             # 后端 Docker 镜像
   frontend/                # Vue 前端项目
     src/                   # 前端源码
+      components/          # 顾客端、商家端、规格弹窗等页面组件
+      api.js               # 前端 API 请求封装
+      App.vue              # 应用壳、全局状态与业务协调
+      styles.css           # 全局样式
     Dockerfile             # 前端 Docker 镜像
   docker-compose.yml       # Docker Compose 编排
   pyproject.toml           # uv 项目配置与 Python 后端依赖声明
