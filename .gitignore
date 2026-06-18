@@ -26,15 +26,6 @@ db.sqlite3-journal
 media/
 staticfiles/
 
-# MySQL 本地数据、备份与临时导出
-mysql_data/
-docker/mysql/data/
-*.sql.gz
-*.dump
-*.bak
-local_*.sql
-backup_*.sql
-
 # 日志文件
 *.log
 logs/
@@ -55,10 +46,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# Docker 本地覆盖配置与临时文件
-docker-compose.override.yml
-.docker/
 
 # IDE 与编辑器配置
 .idea/

@@ -1,16 +1,16 @@
 # 在线点餐平台
 
-> `food-order-platform` 是一个基于 `Django + Vue + MySQL` 的在线点餐平台 MVP，用于课程项目验收
+> `food-order-platform` 是一个基于 `Django + Vue + SQLite` 的在线点餐平台 MVP，用于课程项目验收。
 
 ## 一、项目简介
 
-本项目面向门店自取场景，提供顾客端点餐下单与商家端订单处理能力
+本项目面向门店自取场景，提供顾客端点餐下单与商家端订单处理能力。
 
-顾客可以浏览食品菜单、选择商品规格、加入购物车、提交订单并完成模拟支付
+顾客可以浏览食品菜单、选择商品规格、加入购物车、提交订单并完成模拟支付。
 
-商家可以维护商品信息、控制商品售罄状态，并推进订单状态流转
+商家可以维护商品信息、控制商品售罄状态，并推进订单状态流转。
 
-项目支持使用 `Docker Compose` 统一启动前端、后端和 MySQL 数据库，验收环境无需单独安装 Python、Node 或 MySQL
+项目使用 SQLite 作为本地演示数据库，老师运行时不需要安装或配置额外数据库。
 
 ## 二、技术选型
 
@@ -18,10 +18,9 @@
 |---|---|---|
 | 后端 | Django、Django REST Framework | 提供业务接口、订单流转和数据持久化逻辑 |
 | 前端 | Vue、Vite | 实现顾客端与商家端页面 |
-| 数据库 | MySQL | 存储用户、商品、购物车、订单、支付和评价数据 |
+| 数据库 | SQLite | 本地文件数据库，降低运行和验收配置成本 |
 | 依赖管理 | uv、pyproject.toml、uv.lock | 管理 Python 虚拟环境与后端依赖 |
 | 接口文档 | drf-spectacular | 生成和演示 REST API 文档 |
-| 项目打包 | Docker、Docker Compose | 统一编排 MySQL、Django 和 Vue |
 
 ## 三、MVP 功能范围
 
@@ -34,85 +33,54 @@
 - 商家端商品管理
 - 商家端订单处理
 
-## 四、开发约束
+## 四、一键启动
 
-后续编码必须遵守 [project-rules.md](project-rules.md)
+老师本机只需要安装 Python、uv、Node.js。
 
-## 五、Docker 启动
-
-在项目根目录执行：
+在项目根目录双击或执行：
 
 ```powershell
-docker compose up --build
+start-demo.cmd
 ```
+
+脚本会自动完成：
+
+- 安装 Python 后端依赖
+- 创建 SQLite 本地数据库
+- 执行 Django 迁移
+- 导入 demo 数据
+- 打开后端服务窗口
+- 打开前端服务窗口
 
 启动后访问：
 
 ```text
 前端页面：http://localhost:5173
-后端接口：http://localhost:8000/api
+后端接口：http://localhost:8000/api/health/
 接口文档：http://localhost:8000/api/schema/swagger-ui/
 ```
 
-Docker 内部 MySQL 配置：
+## 五、手动启动
 
-```text
-DB_NAME=food_order_platform
-DB_USER=food_order_user
-DB_PASSWORD=food_order_pass
-DB_HOST=mysql
-DB_PORT=3306
-```
-
-如需重置 Docker 数据库：
+后端终端：
 
 ```powershell
-docker compose down -v
-docker compose up --build
-```
-
-## 六、本地开发
-
-同步 Python 后端依赖：
-
-```powershell
+cd D:\Code\Python\Practice\food-order-platform
 uv sync
+uv run python backend\manage.py migrate
+uv run python backend\manage.py loaddata demo_data
+uv run python backend\manage.py runserver
 ```
 
-复制环境变量示例：
+前端终端：
 
 ```powershell
-Copy-Item .env.example .env
-```
-
-本地开发阶段可将 `.env` 中的 MySQL 连接信息改成自己电脑上的 MySQL：
-
-```text
-DB_NAME=food_order_platform
-DB_USER=root
-DB_PASSWORD=你的本机 MySQL 密码
-DB_HOST=127.0.0.1
-DB_PORT=3306
-```
-
-进入后端目录并执行迁移：
-
-```powershell
-cd backend
-uv run python manage.py migrate
-uv run python manage.py loaddata demo_data
-uv run python manage.py runserver
-```
-
-进入前端目录并启动开发服务器：
-
-```powershell
-cd frontend
+cd D:\Code\Python\Practice\food-order-platform\frontend
 npm install
 npm run dev
 ```
 
-## 七、演示账号
+## 六、演示账号
 
 顾客端可使用：
 
@@ -121,9 +89,16 @@ npm run dev
 验证码：123456
 ```
 
-也可以输入其他合法手机号，系统会自动创建新顾客账号
+也可以输入其他合法手机号，系统会自动创建新顾客账号。
 
-## 八、接口概览
+商家端演示账号：
+
+```text
+账号：admin
+密码：123456
+```
+
+## 七、接口概览
 
 | **接口** | **说明** |
 |---|---|
@@ -139,7 +114,7 @@ npm run dev
 | `GET /api/admin/orders/` | 商家查询订单 |
 | `PATCH /api/admin/orders/{id}/status/` | 商家推进订单状态 |
 
-## 九、目录结构
+## 八、目录结构
 
 ```text
 food-order-platform/
@@ -152,17 +127,15 @@ food-order-platform/
       exceptions.py        # 业务异常定义
       views.py             # HTTP 请求适配层
     config/                # Django 配置
-    Dockerfile             # 后端 Docker 镜像
   frontend/                # Vue 前端项目
     src/                   # 前端源码
       components/          # 顾客端、商家端、规格弹窗等页面组件
       api.js               # 前端 API 请求封装
       App.vue              # 应用壳、全局状态与业务协调
       styles.css           # 全局样式
-    Dockerfile             # 前端 Docker 镜像
-  docker-compose.yml       # Docker Compose 编排
   pyproject.toml           # uv 项目配置与 Python 后端依赖声明
   uv.lock                  # uv 锁定的精确依赖版本
   project-rules.md         # 项目开发约束
+  start-demo.cmd           # 本地演示启动脚本
   README.md                # 项目说明
 ```
